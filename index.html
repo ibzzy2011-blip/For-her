@@ -8,24 +8,37 @@
 body{
   margin:0;
   font-family:'Arial', cursive;
-  background: linear-gradient(135deg,#ff9acb,#ffb6d9,#ffd1f0,#ffe0f7);
-  background-size:400% 400%;
-  animation: gradientAnim 15s ease infinite;
+  background: purple;
   overflow:hidden;
 }
 
-@keyframes gradientAnim{
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
+/* Pages */
+.page{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  width:100vw;
+  text-align:center;
+  position:relative;
+  opacity:0;
+  transition:opacity 0.8s ease;
 }
+.active{opacity:1;}
 
-.page{display:none;height:100vh;width:100vw;text-align:center;padding:20px;position:relative;}
-.active{display:block;}
-h1,h2{color:#fff;text-shadow:2px 2px #ff69b4;}
+h1,h2{color:white;text-shadow:2px 2px #ff69b4;}
 .next{
-  position:fixed;bottom:20px;left:20px;background:#32cd32;color:white;
-  border:none;padding:10px 18px;border-radius:20px;font-size:16px;cursor:pointer;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#32cd32;
+  color:white;
+  border:none;
+  padding:10px 18px;
+  border-radius:20px;
+  font-size:16px;
+  cursor:pointer;
 }
 .btn{
   padding:12px 25px;font-size:18px;border:none;border-radius:25px;margin:10px;cursor:pointer;
@@ -34,75 +47,117 @@ h1,h2{color:#fff;text-shadow:2px 2px #ff69b4;}
 .btn:hover{transform:scale(1.1);}
 .yes{background:#32cd32;color:white;}
 .no{background:red;color:white;position:absolute;}
-.letters{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:20px;}
-.letter{background:#fff;padding:15px;border-radius:15px;cursor:pointer;box-shadow:0 4px 8px rgba(0,0,0,0.2);}
-.content{display:none;margin-top:10px;font-size:14px;}
-.typing{border-right:2px solid white;white-space:nowrap;overflow:hidden;animation:typing 3s steps(30,end), blink .7s infinite;}
-@keyframes typing{from{width:0}to{width:100%}}
+
+.letters{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:20px;position:relative;}
+.envelope{
+  width:150px;
+  height:100px;
+  background:#fff;
+  border-radius:10px;
+  position:relative;
+  cursor:pointer;
+  perspective:600px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.2);
+}
+.envelope:before{
+  content:"";
+  position:absolute;
+  width:0;
+  height:0;
+  border-left:75px solid transparent;
+  border-right:75px solid transparent;
+  border-bottom:50px solid #ff69b4;
+  top:-50px;
+  left:0;
+  transform-origin:top;
+  transition: transform 0.6s;
+}
+.envelope.open:before{
+  transform:rotateX(180deg);
+}
+.letterContent{
+  display:none;
+  padding:10px;
+  background:#fff;
+  border-radius:10px;
+  margin-top:10px;
+  font-size:14px;
+}
+
+.typingLetter{border-right:2px solid pink;white-space:nowrap;overflow:hidden;}
 @keyframes blink{50%{border-color:transparent}}
+
 .heart{position:absolute;color:white;font-weight:bold;animation:float 6s linear infinite;}
 @keyframes float{from{bottom:-10%;opacity:1;}to{bottom:110%;opacity:0;}}
-.cats{display:flex;justify-content:center;margin-top:30px;}
-.cat{width:80px;height:80px;background:#fff;border-radius:50%;margin:10px;animation:kiss 1.5s infinite alternate;}
-@keyframes kiss{from{transform:translateX(0)}to{transform:translateX(15px)}}
-#gameArea{position:relative;width:100%;height:300px;background:rgba(255,255,255,0.2);margin-top:20px;overflow:hidden;border-radius:15px;}
-.heartGame{position:absolute;font-size:30px;cursor:pointer;}
+
+#gameArea{position:relative;width:100%;height:300px;background:rgba(255,255,255,0.2);overflow:hidden;border-radius:15px;margin-top:20px;}
+.heartGame{position:absolute;font-size:30px;cursor:pointer;transition:0.2s;}
+
+.sparkle{
+  width:8px;height:8px;background:#fff;border-radius:50%;position:absolute;animation:sparkleAnim 2s linear infinite;
+}
+@keyframes sparkleAnim{
+  0%{opacity:1;transform:translateY(0px);}
+  100%{opacity:0;transform:translateY(-50px);}
+}
+
+/* Cats final page */
+.cats{position:relative;width:200px;height:120px;margin-top:30px;opacity:0;transition:opacity 1s;}
+.cats.visible{opacity:1;}
+.cat{width:80px;height:80px;background:#fff;border-radius:50%;position:absolute;bottom:0;animation:kiss 2s infinite alternate;}
+.cat1{left:40px;}
+.cat2{left:80px;}
+@keyframes kiss{0%{transform:translateX(0)}50%{transform:translateX(20px)}100%{transform:translateX(0)}}
 </style>
 </head>
 <body>
 
 <!-- PAGE 0: Landing -->
 <div class="page active">
-  <h1 class="typing">HIIIIII BABYYYYY 💕</h1>
+  <h1 class="typing">HIIII BABYYYYY 💕</h1>
   <button class="next" onclick="go(1)">Next</button>
 </div>
 
 <!-- PAGE 1: Valentine Question -->
 <div class="page">
-  <h2>WILL U BE MY VALENTINE???? 💘</h2>
+  <h2>WILL U BE MY VALENTINE??? 💘</h2>
   <button class="btn yes" onclick="go(2)">YES 💖</button>
   <button class="btn no" onmouseover="moveNo()">NO 💔</button>
 </div>
 
 <!-- PAGE 2: Heart Catcher Game -->
 <div class="page">
-  <h2>Catch 5 hearts to see your surprise 💕</h2>
+  <h2>Catch 5 hearts 💕 to see your surprise!</h2>
   <div id="gameArea"></div>
 </div>
 
 <!-- PAGE 3: Letters -->
 <div class="page">
-<h2>Tap each letter 💌</h2>
-<div class="letters">
+<h2>Tap each envelope 💌</h2>
+<div class="letters" id="lettersContainer">
 
-<div class="letter" onclick="openL(this)">
-<b>💖 Letter 1</b>
-<div class="content">Pooja, every day I think about you and my heart just smiles. I love you more than I can ever put into words. You are my sunshine, my calm, my happy place. Every little thing about you — your smile, your laugh, your soft voice — makes my heart beat faster. I hope you always feel how deeply I love you, even when I can’t say it enough.</div>
+<div class="envelope" onclick="openLetter(this,false)">
+  <div class="letterContent">Pooja, every day I think about you and my heart just smiles. I love you more than I can ever put into words. You are my sunshine, my calm, my happy place. Every little thing about you — your smile, your laugh, your soft voice — makes my heart beat faster. I hope you always feel how deeply I love you, even when I can’t say it enough.</div>
 </div>
 
-<div class="letter" onclick="openL(this)">
-<b>💕 Letter 2</b>
-<div class="content">Baby, I care about you more than anyone else in this world. Your happiness matters to me more than anything, your tears make me feel sad, your laughter makes me feel like the luckiest person alive. I want to protect you, comfort you, and always make you feel safe. I promise to always be by your side no matter what.</div>
+<div class="envelope" onclick="openLetter(this,false)">
+  <div class="letterContent">Baby, I care about you more than anyone else in this world. Your happiness matters to me more than anything, your tears make me feel sad, your laughter makes me feel like the luckiest person alive. I want to protect you, comfort you, and always make you feel safe. I promise to always be by your side no matter what.</div>
 </div>
 
-<div class="letter" onclick="openL(this)">
-<b>🫶 Letter 3</b>
-<div class="content">Pooja, with you I feel so safe and comfortable. Being around you makes everything feel right. I feel loved, happy, and completely at peace whenever I’m with you. Even the smallest moments with you feel magical — your hugs, your words, your smile — they make my world so bright.</div>
+<div class="envelope" onclick="openLetter(this,false)">
+  <div class="letterContent">Pooja, with you I feel so safe and comfortable. Being around you makes everything feel right. I feel loved, happy, and completely at peace whenever I’m with you. Even the smallest moments with you feel magical — your hugs, your words, your smile — they make my world so bright.</div>
 </div>
 
-<div class="letter" onclick="openL(this)">
-<b>✨ Letter 4</b>
-<div class="content">Baby, you are the most beautiful person I’ve ever met — inside and out. Your heart is pure, your soul shines, and your smile lights up everything around you. I could spend a lifetime admiring you and still not see all the ways you’re perfect. You are my dream come true.</div>
+<div class="envelope" onclick="openLetter(this,false)">
+  <div class="letterContent">Baby, you are the most beautiful person I’ve ever met — inside and out. Your heart is pure, your soul shines, and your smile lights up everything around you. I could spend a lifetime admiring you and still not see all the ways you’re perfect. You are my dream come true.</div>
 </div>
 
-<div class="letter" onclick="openL(this)">
-<b>🌸 Letter 5</b>
-<div class="content">Pooja, you inspire me to be better every day. I want to grow, learn, and become the best version of myself just for you. I want to make you proud, make you happy, and always be someone you can rely on. Loving you makes me want to be the best I can be.</div>
+<div class="envelope" onclick="openLetter(this,false)">
+  <div class="letterContent">Pooja, you inspire me to be better every day. I want to grow, learn, and become the best version of myself just for you. I want to make you proud, make you happy, and always be someone you can rely on. Loving you makes me want to be the best I can be.</div>
 </div>
 
-<div class="letter" onclick="openL(this)">
-<b>💍 Letter 6</b>
-<div class="content">Baby, I dream of a life with you. I want to wake up next to you, laugh with you, support you, and build our dreams together. I want to hold your hand through everything life throws at us and one day, marry you. I want our future to be filled with love, laughter, and endless happiness, just like we deserve.</div>
+<div class="envelope" onclick="openLetter(this,true)">
+  <div class="letterContent">Baby, I dream of a life with you. I want to wake up next to you, laugh with you, support you, and build our dreams together. I want to hold your hand through everything life throws at us and one day, marry you. I want our future to be filled with love, laughter, and endless happiness, just like we deserve.</div>
 </div>
 
 </div>
@@ -116,9 +171,9 @@ I AM REALLY GRATEFUL I HAVE U BY MY SIDE<br>
 OK BYEEEEEEE MWAHHHHHH 💋<br>
 I LOVE YOU SO MUCH</h2>
 
-<div class="cats">
-  <div class="cat"></div>
-  <div class="cat"></div>
+<div class="cats" id="catsFinal">
+  <div class="cat cat1"></div>
+  <div class="cat cat2"></div>
 </div>
 </div>
 
@@ -126,7 +181,28 @@ I LOVE YOU SO MUCH</h2>
 let pages=document.querySelectorAll(".page");
 function go(n){pages.forEach(p=>p.classList.remove("active"));pages[n].classList.add("active");}
 function moveNo(){let n=document.querySelector(".no");n.style.left=Math.random()*80+"%";n.style.top=Math.random()*80+"%";}
-function openL(el){let c=el.querySelector(".content");c.style.display=c.style.display=="block"?"none":"block";}
+
+// Open letter with typing; lastLetter triggers cat animation
+function openLetter(el,last=false){
+  el.classList.add("open");
+  let content=el.querySelector(".letterContent");
+  let txt=content.innerText;
+  content.innerText="";
+  content.style.display="block";
+  let i=0;
+  let interval=setInterval(()=>{
+    content.innerText+=txt[i];
+    i++;
+    if(i>=txt.length){
+      clearInterval(interval);
+      if(last){
+        showCats();
+        confetti();
+        spawnHeartsAroundCats();
+      }
+    }
+  },20);
+}
 
 // Floating hearts with her name
 setInterval(()=>{
@@ -158,11 +234,47 @@ function spawnHeart(){
   heart.onclick=function(){
     heartsCaught++;
     heart.remove();
-    if(heartsCaught>=5){go(3);}
+    if(heartsCaught>=5){
+      confetti();
+      setTimeout(()=>go(3),1200);
+    }
   }
 }
 setInterval(spawnHeart,800);
-</script>
 
+// Confetti
+function confetti(){
+  for(let i=0;i<100;i++){
+    let c=document.createElement("div");
+    c.className="sparkle";
+    c.style.left=Math.random()*100+"%";
+    c.style.top=Math.random()*100+"%";
+    c.style.backgroundColor=['#ff69b4','#fff','#ffb6d9','#ffd1f0'][Math.floor(Math.random()*4)];
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),2000);
+  }
+}
+
+// Show cat animation
+function showCats(){
+  let cats=document.getElementById("catsFinal");
+  cats.classList.add("visible");
+}
+
+// Floating hearts around cats
+function spawnHeartsAroundCats(){
+  let cats=document.getElementById("catsFinal");
+  for(let i=0;i<50;i++){
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerText="❤ POOJA ❤";
+    h.style.left=(40+Math.random()*60)+"px";
+    h.style.top=(40+Math.random()*40)+"px";
+    h.style.fontSize=(10+Math.random()*15)+"px";
+    cats.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
+  }
+}
+</script>
 </body>
 </html>
