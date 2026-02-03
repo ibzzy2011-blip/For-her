@@ -3,175 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Her 💗</title>
-
+<title>For Her 💖</title>
 <style>
 body{
   margin:0;
-  font-family: 'Arial', cursive;
-  background:#ffb6c1;
+  font-family:'Arial', cursive;
+  background: linear-gradient(135deg,#ff9acb,#ffb6d9,#ffd1f0,#ffe0f7);
+  background-size:400% 400%;
+  animation: gradientAnim 15s ease infinite;
   overflow:hidden;
 }
-.page{
-  display:none;
-  height:100vh;
-  width:100vw;
-  text-align:center;
-  padding:20px;
+
+@keyframes gradientAnim{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
+
+.page{display:none;height:100vh;width:100vw;text-align:center;padding:20px;position:relative;}
 .active{display:block;}
-
-h1,h2{
-  color:#fff;
-  text-shadow:2px 2px #ff69b4;
-}
-
+h1,h2{color:#fff;text-shadow:2px 2px #ff69b4;}
 .next{
-  position:fixed;
-  bottom:20px;
-  left:20px;
-  background:#32cd32;
-  color:white;
-  border:none;
-  padding:10px 18px;
-  border-radius:20px;
-  font-size:16px;
+  position:fixed;bottom:20px;left:20px;background:#32cd32;color:white;
+  border:none;padding:10px 18px;border-radius:20px;font-size:16px;cursor:pointer;
 }
-
-/* Buttons */
 .btn{
-  padding:12px 25px;
-  font-size:18px;
-  border:none;
-  border-radius:25px;
-  margin:10px;
+  padding:12px 25px;font-size:18px;border:none;border-radius:25px;margin:10px;cursor:pointer;
+  transition:0.3s;
 }
+.btn:hover{transform:scale(1.1);}
 .yes{background:#32cd32;color:white;}
 .no{background:red;color:white;position:absolute;}
-
-/* Letters */
-.letters{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-}
-.letter{
-  background:#fff;
-  padding:15px;
-  border-radius:15px;
-  cursor:pointer;
-  box-shadow:0 4px 8px rgba(0,0,0,0.2);
-}
-.content{
-  display:none;
-  margin-top:10px;
-  font-size:14px;
-}
-
-/* Typing */
-.typing{
-  border-right:2px solid white;
-  white-space:nowrap;
-  overflow:hidden;
-  animation:typing 3s steps(30,end), blink .7s infinite;
-}
+.letters{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:20px;}
+.letter{background:#fff;padding:15px;border-radius:15px;cursor:pointer;box-shadow:0 4px 8px rgba(0,0,0,0.2);}
+.content{display:none;margin-top:10px;font-size:14px;}
+.typing{border-right:2px solid white;white-space:nowrap;overflow:hidden;animation:typing 3s steps(30,end), blink .7s infinite;}
 @keyframes typing{from{width:0}to{width:100%}}
 @keyframes blink{50%{border-color:transparent}}
-
-/* Hearts */
-.heart{
-  position:absolute;
-  color:white;
-  animation:float 6s linear infinite;
-}
-@keyframes float{
-  from{bottom:-10%;opacity:1;}
-  to{bottom:110%;opacity:0;}
-}
-
-/* Cats */
-.cats{
-  display:flex;
-  justify-content:center;
-  margin-top:30px;
-}
-.cat{
-  width:80px;
-  height:80px;
-  background:#fff;
-  border-radius:50%;
-  margin:10px;
-  animation:kiss 1.5s infinite alternate;
-}
-@keyframes kiss{
-  from{transform:translateX(0)}
-  to{transform:translateX(15px)}
-}
+.heart{position:absolute;color:white;font-weight:bold;animation:float 6s linear infinite;}
+@keyframes float{from{bottom:-10%;opacity:1;}to{bottom:110%;opacity:0;}}
+.cats{display:flex;justify-content:center;margin-top:30px;}
+.cat{width:80px;height:80px;background:#fff;border-radius:50%;margin:10px;animation:kiss 1.5s infinite alternate;}
+@keyframes kiss{from{transform:translateX(0)}to{transform:translateX(15px)}}
+#gameArea{position:relative;width:100%;height:300px;background:rgba(255,255,255,0.2);margin-top:20px;overflow:hidden;border-radius:15px;}
+.heartGame{position:absolute;font-size:30px;cursor:pointer;}
 </style>
 </head>
-
 <body>
 
-<!-- PAGE 1 -->
+<!-- PAGE 0: Landing -->
 <div class="page active">
   <h1 class="typing">HIIIIII BABYYYYY 💕</h1>
   <button class="next" onclick="go(1)">Next</button>
 </div>
 
-<!-- PAGE 2 -->
+<!-- PAGE 1: Valentine Question -->
 <div class="page">
   <h2>WILL U BE MY VALENTINE???? 💘</h2>
   <button class="btn yes" onclick="go(2)">YES 💖</button>
   <button class="btn no" onmouseover="moveNo()">NO 💔</button>
-  <button class="next" onclick="go(2)">Next</button>
 </div>
 
-<!-- PAGE 3 -->
+<!-- PAGE 2: Heart Catcher Game -->
 <div class="page">
-  <h2>I LOVE YOU SO MUCH 💗<br>I HAVE A SURPRISE FOR U IN THE NEXT PAGE</h2>
-  <button class="next" onclick="go(3)">Next</button>
+  <h2>Catch 5 hearts to see your surprise 💕</h2>
+  <div id="gameArea"></div>
 </div>
 
-<!-- PAGE 4 LETTERS -->
+<!-- PAGE 3: Letters -->
 <div class="page">
 <h2>Tap each letter 💌</h2>
 <div class="letters">
 
 <div class="letter" onclick="openL(this)">
 <b>💖 Letter 1</b>
-<div class="content">I love you more than I can ever explain. Every thought of you makes my heart lighter. Loving you feels natural and right, like my heart chose you long before I did.</div>
+<div class="content">Pooja, every day I think about you and my heart just smiles. I love you more than I can ever put into words. You are my sunshine, my calm, my happy place. Every little thing about you — your smile, your laugh, your soft voice — makes my heart beat faster. I hope you always feel how deeply I love you, even when I can’t say it enough.</div>
 </div>
 
 <div class="letter" onclick="openL(this)">
 <b>💕 Letter 2</b>
-<div class="content">I care about you deeply. Your feelings matter more to me than anything else. I want to protect your heart and always be there for you.</div>
+<div class="content">Baby, I care about you more than anyone else in this world. Your happiness matters to me more than anything, your tears make me feel sad, your laughter makes me feel like the luckiest person alive. I want to protect you, comfort you, and always make you feel safe. I promise to always be by your side no matter what.</div>
 </div>
 
 <div class="letter" onclick="openL(this)">
 <b>🫶 Letter 3</b>
-<div class="content">With you I feel safe, happy, comfortable and loved. You are my calm place and my peace.</div>
+<div class="content">Pooja, with you I feel so safe and comfortable. Being around you makes everything feel right. I feel loved, happy, and completely at peace whenever I’m with you. Even the smallest moments with you feel magical — your hugs, your words, your smile — they make my world so bright.</div>
 </div>
 
 <div class="letter" onclick="openL(this)">
 <b>✨ Letter 4</b>
-<div class="content">You are beautiful inside and out. Your smile, your heart, your soul — everything about you is perfect to me.</div>
+<div class="content">Baby, you are the most beautiful person I’ve ever met — inside and out. Your heart is pure, your soul shines, and your smile lights up everything around you. I could spend a lifetime admiring you and still not see all the ways you’re perfect. You are my dream come true.</div>
 </div>
 
 <div class="letter" onclick="openL(this)">
 <b>🌸 Letter 5</b>
-<div class="content">I want to be better every day for you. Loving you makes me want to grow and become the best version of myself.</div>
+<div class="content">Pooja, you inspire me to be better every day. I want to grow, learn, and become the best version of myself just for you. I want to make you proud, make you happy, and always be someone you can rely on. Loving you makes me want to be the best I can be.</div>
 </div>
 
 <div class="letter" onclick="openL(this)">
 <b>💍 Letter 6</b>
-<div class="content">I dream of a future with you. A life together, loving each other, supporting each other, and one day marrying you.</div>
+<div class="content">Baby, I dream of a life with you. I want to wake up next to you, laugh with you, support you, and build our dreams together. I want to hold your hand through everything life throws at us and one day, marry you. I want our future to be filled with love, laughter, and endless happiness, just like we deserve.</div>
 </div>
 
 </div>
 <button class="next" onclick="go(4)">Next</button>
 </div>
 
-<!-- PAGE 5 -->
+<!-- PAGE 4: Thank You -->
 <div class="page">
 <h2>THANK YOU FR UR TIME BABY 💕<br>
 I AM REALLY GRATEFUL I HAVE U BY MY SIDE<br>
@@ -186,31 +124,44 @@ I LOVE YOU SO MUCH</h2>
 
 <script>
 let pages=document.querySelectorAll(".page");
-function go(n){
-  pages.forEach(p=>p.classList.remove("active"));
-  pages[n].classList.add("active");
-}
+function go(n){pages.forEach(p=>p.classList.remove("active"));pages[n].classList.add("active");}
+function moveNo(){let n=document.querySelector(".no");n.style.left=Math.random()*80+"%";n.style.top=Math.random()*80+"%";}
+function openL(el){let c=el.querySelector(".content");c.style.display=c.style.display=="block"?"none":"block";}
 
-function moveNo(){
-  let n=document.querySelector(".no");
-  n.style.left=Math.random()*80+"%";
-  n.style.top=Math.random()*80+"%";
-}
-
-function openL(el){
-  let c=el.querySelector(".content");
-  c.style.display=c.style.display=="block"?"none":"block";
-}
-
-// Hearts with her name
+// Floating hearts with her name
 setInterval(()=>{
   let h=document.createElement("div");
   h.className="heart";
   h.innerText="❤ POOJA ❤";
   h.style.left=Math.random()*100+"%";
+  h.style.fontSize=(12+Math.random()*15)+"px";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),6000);
 },500);
+
+// Heart Catcher Game
+let gameArea=document.getElementById("gameArea");
+let heartsCaught=0;
+function spawnHeart(){
+  let heart=document.createElement("div");
+  heart.className="heartGame";
+  heart.style.left=Math.random()*90+"%";
+  heart.style.top="-30px";
+  heart.innerText="💖";
+  gameArea.appendChild(heart);
+  let speed=2+Math.random()*2;
+  let fall=setInterval(()=>{
+    let top=parseFloat(heart.style.top);
+    if(top>270){clearInterval(fall);heart.remove();}
+    else heart.style.top=top+speed+"px";
+  },20);
+  heart.onclick=function(){
+    heartsCaught++;
+    heart.remove();
+    if(heartsCaught>=5){go(3);}
+  }
+}
+setInterval(spawnHeart,800);
 </script>
 
 </body>
