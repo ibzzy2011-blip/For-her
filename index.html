@@ -45,8 +45,8 @@ h1,h2{color:white;text-shadow:2px 2px #ff69b4;}
   transition:0.3s;
 }
 .btn:hover{transform:scale(1.1);}
-.yes{background:#32cd32;color:white;}
-.no{background:red;color:white;position:absolute;}
+.yes{background:#32cd32;color:white; z-index:2; position:relative;}
+.no{background:red;color:white;position:absolute; z-index:1;}
 
 .letters{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:20px;position:relative;}
 .envelope{
